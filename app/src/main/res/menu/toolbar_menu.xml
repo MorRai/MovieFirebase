@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_filters"
+        android:title="@string/header_filters"
+        android:icon="@android:drawable/ic_menu_preferences"
+        app:showAsAction="always|collapseActionView" />
+    <item android:id="@+id/action_switch_layout"
+        android:title="@string/action_switch_layout"
+        android:icon="@drawable/ic_linear_layout"
+        app:showAsAction="always" />
+    <item android:id="@+id/action_sign_out"
+        android:title="@string/action_sign_out"
+        android:icon="@android:drawable/ic_popup_sync"
+        app:showAsAction="always" />
+</menu>

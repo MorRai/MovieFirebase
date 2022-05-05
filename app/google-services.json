@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "925155775783",
+    "project_id": "movieposter-8ec2b",
+    "storage_bucket": "movieposter-8ec2b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:925155775783:android:03c4eed48593ea19e64502",
+        "android_client_info": {
+          "package_name": "com.rai.movieposter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "925155775783-ua27blbf9js1nk8gk0m32cjc2e3t5tie.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAykEbMLK-JXNMAPGY8-bnmyZDd0c9mlxQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "925155775783-ua27blbf9js1nk8gk0m32cjc2e3t5tie.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

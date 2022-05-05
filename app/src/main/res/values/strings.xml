@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">MoviePoster</string>
+
+    <string name="err_password_length">Password must be more than 6 characters</string>
+
+    <string name="reload">Reload</string>
+    <string name="sign_in">Sign In</string>
+    <string name="create_account">Create Account</string>
+    <string name="send_link">Send Link</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="auth_failed">Authentication failed</string>
+    <string name="imdb">Imdb</string>
+    <string name="kinopoisk">KinoPoisk</string>
+
+    <string name="edit_fragment_title">Edit Item</string>
+    <string name="add_fragment_title">Add Item</string>
+    <string name="edit_item">Edit Item</string>
+    <string name="add_new_item">Add new item</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="data_movie">Movie Year<font color='#FF0000'>*</font></string>
+    <string name="name_movie">Movie Name <font color='#FF0000'>*</font></string>
+    <string name="genres">Genres 1<font color='#FF0000'>*</font></string>
+    <string name="genres2">Genres 2<font color='#FF0000'>*</font></string>
+    <string name="genres3">Genres 3<font color='#FF0000'>*</font></string>
+    <string name="rating_imbd">Rating imbd <font color='#FF0000'>*</font></string>
+    <string name="rating_kinopoisk">Rating kinopoisk <font color='#FF0000'>*</font></string>
+    <string name="certificate">Certificate<font color='#FF0000'>*</font></string>
+    <string name="country_of_origin">Country of origin <font color='#FF0000'>*</font></string>
+    <string name="runtime">Runtime, min <font color='#FF0000'>*</font></string>
+    <string name="storyline">Storyline <font color='#FF0000'>*</font></string>
+    <string name="image">Image <font color='#FF0000'>*</font></string>
+    <string name="trailer">Trailer <font color='#FF0000'>*</font></string>
+    <string name="save_action">Save</string>
+    <string name="choose_image">Choose image</string>
+    <string name="choose_video">Choose video</string>
+
+    <string name="header_filters">Filter</string>
+    <string name="apply">Apply</string>
+    <string name="cancel">Cancel</string>
+    <string name="year_of_issue">Year of issue:</string>
+    <string name="raiting_kinopoisk">Raiting Kinopoisk:</string>
+    <string name="raiting_imbd">Raiting Imbd:</string>
+    <string name="to">to</string>
+    <string name="from">from</string>
+    <string name="action_switch_layout">Switch Layout</string>
+    <string name="action_sign_out">Sign out</string>
+
+</resources>

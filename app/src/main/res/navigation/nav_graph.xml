@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/аuthorizationFragment">
+    <fragment
+        android:id="@+id/аuthorizationFragment"
+        android:name="com.rai.movieposter.ui.AuthorizationFragment"
+        android:label="АuthorizationFragment" >
+        <action
+            android:id="@+id/action_аuthorizationFragment_to_listMovieFragment"
+            app:destination="@id/listMovieFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listMovieFragment"
+        android:name="com.rai.movieposter.ui.ListMovieFragment"
+        android:label="ListMovieFragment" >
+        <action
+            android:id="@+id/action_listMovieFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment" />
+        <action
+            android:id="@+id/action_listMovieFragment_to_addMovieFragment"
+            app:destination="@id/addMovieFragment" />
+        <action
+            android:id="@+id/action_listMovieFragment_to_filterDialogFragment"
+            app:destination="@id/filterDialogFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieDetailFragment"
+        android:name="com.rai.movieposter.ui.MovieDetailFragment"
+        android:label="MovieDetailFragment" >
+        <argument
+            android:name="movie"
+            app:argType="com.rai.movieposter.data.Movie" />
+        <action
+            android:id="@+id/action_movieDetailFragment_to_addMovieFragment"
+            app:destination="@id/addMovieFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addMovieFragment"
+        android:name="com.rai.movieposter.ui.AddMovieFragment"
+        android:label="AddMovieFragment" >
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument
+            android:name="movie"
+            app:argType="com.rai.movieposter.data.Movie"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_addMovieFragment_to_listMovieFragment"
+            app:destination="@id/listMovieFragment"
+            app:popUpTo="@id/listMovieFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <dialog
+        android:id="@+id/filterDialogFragment"
+        android:name="com.rai.movieposter.ui.FilterDialogFragment"
+        android:label="FilterDialogFragment" />
+</navigation>
