@@ -1,14 +1,10 @@
 package com.rai.movieposter.ui
 
-import android.R
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import com.rai.movieposter.databinding.ActivityMainBinding
 import com.rai.movieposter.databinding.ActivitySplashBinding
 
 
@@ -25,9 +21,9 @@ class SplashScreen : AppCompatActivity()  {
             WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
         with(binding){
-            imgBackgroud.animate().translationY(-2500.0f).setDuration(1000).setStartDelay(5000)
-            appMade.animate().translationY(2000.0f).setDuration(1000).setStartDelay(5000)
-            animationView.animate().translationY(1500.0f).setDuration(1000).setStartDelay(5000)
+            imgBackgroud.animate().translationY(-2500.0f).setDuration(1000).startDelay = 5000
+            appMade.animate().translationY(2000.0f).setDuration(1000).startDelay = 5000
+            animationView.animate().translationY(1500.0f).setDuration(1000).startDelay=5000
         }
 
 
