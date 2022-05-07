@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.rai.movieposter.MovieViewModel
@@ -18,7 +17,6 @@ import com.rai.movieposter.MovieViewModelFactory
 import com.rai.movieposter.R
 import com.rai.movieposter.adapters.ListMovieAdapter
 import com.rai.movieposter.databinding.FragmetListMovieBinding
-import com.rai.movieposter.extension.addCardDecoration
 
 
 class ListMovieFragment : Fragment() {
@@ -28,7 +26,7 @@ class ListMovieFragment : Fragment() {
         "View was destroyed"
     }
 
-    var isLinearLayoutManager = true
+    private var layoutManager: GridLayoutManager? = null
 
     private val viewModel: MovieViewModel by activityViewModels {
         MovieViewModelFactory()
@@ -59,7 +57,10 @@ class ListMovieFragment : Fragment() {
                 findNavController().navigate(action)
             }
 
-            adapter = ListMovieAdapter(requireContext()) {
+            layoutManager = GridLayoutManager(requireContext(), 2)
+            recyclerView.layoutManager = layoutManager
+
+            adapter = ListMovieAdapter(requireContext(), layoutManager) {
                 val action =
                     ListMovieFragmentDirections.actionListMovieFragmentToMovieDetailFragment(it)
                 findNavController().navigate(action)
@@ -72,13 +73,7 @@ class ListMovieFragment : Fragment() {
                     adapter.submitList(it)
                 }
             }
-            recyclerView.addCardDecoration(SPACE_SIZE)
 
-            if (isLinearLayoutManager) {
-                recyclerView.layoutManager = LinearLayoutManager(requireContext())
-            } else {
-                recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
-            }
 
             toolbar.menu.findItem(R.id.action_filters)
             .setOnMenuItemClickListener {
@@ -88,7 +83,6 @@ class ListMovieFragment : Fragment() {
 
             toolbar.menu.findItem(R.id.action_switch_layout)
             .setOnMenuItemClickListener {
-                isLinearLayoutManager = !isLinearLayoutManager
                 chooseLayout()
                 setIcon(it)
                 true
@@ -112,19 +106,20 @@ class ListMovieFragment : Fragment() {
     }
 
     private fun chooseLayout() {
-        if (isLinearLayoutManager) {
-            binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        if (layoutManager ?.spanCount == 1) {
+            layoutManager ?.spanCount = 2
+
         } else {
-            binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
+            layoutManager ?.spanCount = 1
         }
+        adapter.notifyItemRangeChanged(0, adapter.itemCount)
     }
 
     private fun setIcon(menuItem: MenuItem?) {
         if (menuItem == null)
             return
-
         menuItem.icon =
-            if (isLinearLayoutManager)
+            if (layoutManager ?.spanCount == 1)
                 ContextCompat.getDrawable(this.requireContext(), R.drawable.ic_grid_layout)
             else ContextCompat.getDrawable(this.requireContext(), R.drawable.ic_linear_layout)
     }
@@ -132,10 +127,6 @@ class ListMovieFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object{
-        private const val SPACE_SIZE = 50
     }
 
 }

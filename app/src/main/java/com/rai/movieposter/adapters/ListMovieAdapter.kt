@@ -5,51 +5,60 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewbinding.ViewBinding
 import coil.load
 import com.rai.movieposter.data.Movie
 import com.rai.movieposter.databinding.ItemMovieDetailBinding
+import com.rai.movieposter.databinding.ItemMovieDetailGridBinding
 
 
 class ListMovieAdapter(
     context: Context,
+    private val layoutManager: GridLayoutManager? = null,
     private val onItemClicked: (Movie) -> Unit
 ) :
-    ListAdapter<Movie, ListMovieAdapter.ItemViewHolder>(DiffCallback) {
+    ListAdapter<Movie, RecyclerView.ViewHolder>(DiffCallback) {
 
-    val layoutInflater = LayoutInflater.from(context)
+    private val layoutInflater = LayoutInflater.from(context)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        return ItemViewHolder(
-           binding = ItemMovieDetailBinding.inflate(layoutInflater, parent, false)
-        )
+    enum class ViewType {
+        SMALL,
+        DETAILED
     }
 
-    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val current = getItem(position)
-        holder.bind(current)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            ViewType.DETAILED.ordinal -> LinearViewHolder(
+                binding = ItemMovieDetailBinding.inflate(layoutInflater, parent, false)
+            )
+            else -> GridViewHolder(
+                binding = ItemMovieDetailGridBinding.inflate(layoutInflater, parent, false)
+            )
+        }
+
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (layoutManager?.spanCount == 1) ViewType.DETAILED.ordinal
+        else ViewType.SMALL.ordinal
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val item = getItem(position)
+        if (layoutManager?.spanCount == 1) {
+            val itemViewHolder = holder as LinearViewHolder
+            itemViewHolder.bind(item)
+        }else
+        {
+            val itemViewHolder = holder as GridViewHolder
+            itemViewHolder.bind(item)
+        }
         holder.itemView.setOnClickListener {
-            onItemClicked(current)
+            onItemClicked(item)
         }
     }
-
-    class ItemViewHolder (private var binding: ViewBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(movie: Movie) {
-            (binding as ItemMovieDetailBinding).apply {
-                nameFilm.text = movie.nameMovie
-                imageFilm.load(movie.image)
-                ratingIMDB.text = movie.ratingImbd.toString()
-                ratingKinoPoisk.text = movie.ratingKinopoisk.toString()
-
-            }
-        }
-    }
-
-
 
     companion object {
         private val DiffCallback = object : DiffUtil.ItemCallback<Movie>() {
@@ -63,5 +72,32 @@ class ListMovieAdapter(
         }
     }
 }
+
+class LinearViewHolder (private var binding: ItemMovieDetailBinding) :
+    RecyclerView.ViewHolder(binding.root) {
+
+    fun bind(movie: Movie) {
+        with(binding) {
+            nameFilm.text = movie.nameMovie
+            imageFilm.load(movie.image)
+            ratingIMDB.text = movie.ratingImbd.toString()
+            ratingKinoPoisk.text = movie.ratingKinopoisk.toString()
+        }
+    }
+}
+
+class GridViewHolder (private var binding: ItemMovieDetailGridBinding) :
+    RecyclerView.ViewHolder(binding.root) {
+
+    fun bind(movie: Movie) {
+        with(binding) {
+            nameFilm.text = movie.nameMovie
+            imageFilm.load(movie.image)
+            ratingIMDB.text = movie.ratingImbd.toString()
+            ratingKinoPoisk.text = movie.ratingKinopoisk.toString()
+        }
+    }
+}
+
 
 
