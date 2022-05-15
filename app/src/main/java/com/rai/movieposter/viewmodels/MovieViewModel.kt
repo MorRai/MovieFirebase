@@ -3,7 +3,7 @@ package com.rai.movieposter
 
 import android.net.Uri
 import androidx.lifecycle.*
-import com.rai.movieposter.adapters.FirebaseMovieService
+import com.rai.movieposter.services.FirebaseMovieService
 import com.rai.movieposter.data.Filters
 import com.rai.movieposter.data.Movie
 import kotlinx.coroutines.flow.Flow

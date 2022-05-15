@@ -1,4 +1,4 @@
-package com.rai.movieposter.adapters
+package com.rai.movieposter.services
 
 import android.annotation.SuppressLint
 import android.net.Uri
