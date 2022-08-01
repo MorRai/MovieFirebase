@@ -5,11 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
 import com.rai.movieposter.MovieViewModel
-import com.rai.movieposter.MovieViewModelFactory
 import com.rai.movieposter.data.Filters
 import com.rai.movieposter.databinding.DialogFiltersBinding
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class FilterDialogFragment : DialogFragment() {
 
@@ -19,9 +18,10 @@ class FilterDialogFragment : DialogFragment() {
             "View was destroyed"
         }
 
-    private val viewModel: MovieViewModel by activityViewModels {
-        MovieViewModelFactory()
-    }
+    //private val viewModel: MovieViewModel by activityViewModels {
+    //    MovieViewModelFactory(FirebaseMovieService)
+    //}
+    private val viewModel by sharedViewModel<MovieViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,

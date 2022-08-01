@@ -8,17 +8,15 @@ import android.widget.MediaController
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.rai.movieposter.MovieViewModel
-import com.rai.movieposter.MovieViewModelFactory
 import com.rai.movieposter.R
 import com.rai.movieposter.databinding.FragmentAddMovieBinding
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
 class AddMovieFragment : Fragment() {
@@ -31,9 +29,11 @@ class AddMovieFragment : Fragment() {
 
     private val navigationArgs: AddMovieFragmentArgs by navArgs()
 
-    private val viewModel: MovieViewModel by activityViewModels {
-        MovieViewModelFactory()
-    }
+    private val viewModel by sharedViewModel<MovieViewModel>()
+
+   // private val viewModel: MovieViewModel by activityViewModels {
+//        MovieViewModelFactory(FirebaseMovieService)
+  //  }
 
     private var uriImage: String? = null
     private var uriVideo: String? = null
@@ -44,7 +44,7 @@ class AddMovieFragment : Fragment() {
         binding.imageLabel.setImageURI(uri)
         uriImage = null
         lifecycle.coroutineScope.launch {
-            viewModel.uploadImage(uri).collect {
+            viewModel.uploadImage(uri!!).collect {
                 uriImage = it
             }
         }
@@ -57,7 +57,7 @@ class AddMovieFragment : Fragment() {
         binding.videoLabel.setVideoURI(uri)
         uriVideo = null
         lifecycle.coroutineScope.launch {
-            viewModel.uploadImage(uri).collect {
+            viewModel.uploadImage(uri!!).collect {
                 uriVideo = it
             }
         }

@@ -2,7 +2,10 @@ package com.rai.movieposter
 
 
 import android.net.Uri
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.rai.movieposter.services.FirebaseMovieService
 import com.rai.movieposter.data.Filters
 import com.rai.movieposter.data.Movie
@@ -12,23 +15,23 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 
 
-class MovieViewModel : ViewModel() {
+class MovieViewModel(private val firebaseMovieService: FirebaseMovieService) : ViewModel() {
 
      private val mFilters: Filters? = null
 
      val filterQuery  = MutableStateFlow(mFilters)
      private val movieDataFlow = filterQuery.flatMapLatest {
-          FirebaseMovieService.getProfileData(it)
+          firebaseMovieService.getProfileData(it)
      }
      val movieData = movieDataFlow.asLiveData()
 
      suspend fun  uploadImage(uri: Uri): Flow<String>{
-          return  FirebaseMovieService.uploadImageWithUri(uri)
+          return  firebaseMovieService.uploadImageWithUri(uri)
      }
 
      private fun addToMovie(movie: Movie) {
           viewModelScope.launch {
-               FirebaseMovieService.addToCart(movie)
+               firebaseMovieService.addToCart(movie)
           }
      }
 
@@ -88,14 +91,5 @@ class MovieViewModel : ViewModel() {
      }
 }
 
-class MovieViewModelFactory : ViewModelProvider.Factory {
-     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-          if (modelClass.isAssignableFrom(MovieViewModel::class.java)) {
-               @Suppress("UNCHECKED_CAST")
-               return MovieViewModel() as T
-          }
-          throw IllegalArgumentException("Unknown ViewModel class")
-     }
-}
 
 

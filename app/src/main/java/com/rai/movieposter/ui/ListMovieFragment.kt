@@ -7,16 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.rai.movieposter.MovieViewModel
-import com.rai.movieposter.MovieViewModelFactory
 import com.rai.movieposter.R
 import com.rai.movieposter.adapters.ListMovieAdapter
 import com.rai.movieposter.databinding.FragmetListMovieBinding
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
 class ListMovieFragment : Fragment() {
@@ -28,9 +27,7 @@ class ListMovieFragment : Fragment() {
 
     private var layoutManager: GridLayoutManager? = null
 
-    private val viewModel: MovieViewModel by activityViewModels {
-        MovieViewModelFactory()
-    }
+    private val viewModel by sharedViewModel<MovieViewModel>()
 
     private lateinit var adapter: ListMovieAdapter
 
