@@ -5,7 +5,7 @@
     app:startDestination="@id/splashScreen">
     <fragment
         android:id="@+id/аuthorizationFragment"
-        android:name="com.rai.movieposter.ui.AuthorizationFragment"
+        android:name="com.rai.movieposter.ui.authorization.AuthorizationFragment"
         android:label="АuthorizationFragment" >
         <action
             android:id="@+id/action_аuthorizationFragment_to_listMovieFragment"
@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/movieDetailFragment"
-        android:name="com.rai.movieposter.ui.MovieDetailFragment"
+        android:name="com.rai.movieposter.ui.detailMovie.MovieDetailFragment"
         android:label="MovieDetailFragment" >
         <argument
             android:name="movie"
@@ -38,7 +38,7 @@
     </fragment>
     <fragment
         android:id="@+id/addMovieFragment"
-        android:name="com.rai.movieposter.ui.AddMovieFragment"
+        android:name="com.rai.movieposter.ui.addMovie.AddMovieFragment"
         android:label="AddMovieFragment" >
         <argument
             android:name="title"

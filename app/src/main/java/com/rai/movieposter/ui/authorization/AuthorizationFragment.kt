@@ -1,4 +1,4 @@
-package com.rai.movieposter.ui
+package com.rai.movieposter.ui.authorization
 
 import android.os.Bundle
 import android.text.TextUtils

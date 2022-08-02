@@ -1,4 +1,4 @@
-package com.rai.movieposter.ui
+package com.rai.movieposter.ui.addMovie
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,11 +12,10 @@ import androidx.lifecycle.coroutineScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
-import com.rai.movieposter.MovieViewModel
 import com.rai.movieposter.R
 import com.rai.movieposter.databinding.FragmentAddMovieBinding
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class AddMovieFragment : Fragment() {
@@ -29,11 +28,8 @@ class AddMovieFragment : Fragment() {
 
     private val navigationArgs: AddMovieFragmentArgs by navArgs()
 
-    private val viewModel by sharedViewModel<MovieViewModel>()
+    private val viewModel by viewModel<AddMovieViewModel>()
 
-   // private val viewModel: MovieViewModel by activityViewModels {
-//        MovieViewModelFactory(FirebaseMovieService)
-  //  }
 
     private var uriImage: String? = null
     private var uriVideo: String? = null

@@ -1,4 +1,4 @@
-package com.rai.movieposter.ui
+package com.rai.movieposter.ui.detailMovie
 
 import android.annotation.SuppressLint
 import android.os.Bundle

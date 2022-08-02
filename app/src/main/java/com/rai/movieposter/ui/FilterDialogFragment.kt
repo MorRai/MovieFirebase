@@ -72,7 +72,7 @@ class FilterDialogFragment : DialogFragment() {
         dismiss()
     }
 
-
+    //как то так се подправить бы
     private val filters: Filters
         get() {
             val filters = Filters(null, null, null, null, null, null)
