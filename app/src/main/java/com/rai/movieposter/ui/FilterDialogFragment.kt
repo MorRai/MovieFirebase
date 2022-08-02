@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import com.rai.movieposter.MovieViewModel
+import androidx.fragment.app.setFragmentResult
+import androidx.navigation.fragment.navArgs
+import com.rai.movieposter.data.Constants
 import com.rai.movieposter.data.Filters
 import com.rai.movieposter.databinding.DialogFiltersBinding
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class FilterDialogFragment : DialogFragment() {
 
@@ -18,10 +20,7 @@ class FilterDialogFragment : DialogFragment() {
             "View was destroyed"
         }
 
-    //private val viewModel: MovieViewModel by activityViewModels {
-    //    MovieViewModelFactory(FirebaseMovieService)
-    //}
-    private val viewModel by sharedViewModel<MovieViewModel>()
+    private val args by navArgs<FilterDialogFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,33 +32,18 @@ class FilterDialogFragment : DialogFragment() {
                 _binding = binding
             }
             .root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
-            val mFilters = viewModel.filterQuery.value
-            if (mFilters != null) {
-                if (mFilters.yearEnd != null) {
-                    yearEnd.setText(mFilters.yearEnd.toString())
-                }
-                if (mFilters.yearStart != null) {
-                    yearStart.setText(mFilters.yearStart.toString())
-                }
-                if (mFilters.imbdEnd != null) {
-                    ImbdEnd.setText(mFilters.imbdEnd.toString())
-                }
-                if (mFilters.imbdStart != null) {
-                    ImbdStart.setText(mFilters.imbdStart.toString())
-                }
-                if (mFilters.kinopoiskEnd != null) {
-                    kinopoiskEnd.setText(mFilters.kinopoiskEnd.toString())
-                }
-                if (mFilters.kinopoiskStart != null) {
-                    kinopoiskStart.setText(mFilters.kinopoiskStart.toString())
-                }
-            }
+            val mFilters = args.filter
+            yearEnd.setText(mFilters.yearEnd?.toString() ?: "")
+            yearStart.setText(mFilters.yearStart?.toString() ?: "")
+            ImbdEnd.setText(mFilters.imbdEnd?.toString() ?: "")
+            ImbdStart.setText(mFilters.imbdStart?.toString() ?: "")
+            kinopoiskEnd.setText(mFilters.kinopoiskEnd?.toString() ?: "")
+            kinopoiskStart.setText(mFilters.kinopoiskStart?.toString() ?: "")
             buttonCancel.setOnClickListener {
                 onCancelClicked()
             }
@@ -76,9 +60,11 @@ class FilterDialogFragment : DialogFragment() {
             ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
-
     private fun onSearchClicked() {
-        viewModel.filterQuery.value =filters
+        setFragmentResult(
+            Constants.REQUEST_KEY,
+            bundleOf(Constants.EXTRA_KEY to filters)
+        )
         dismiss()
     }
 
@@ -89,7 +75,7 @@ class FilterDialogFragment : DialogFragment() {
 
     private val filters: Filters
         get() {
-            val filters = Filters()
+            val filters = Filters(null, null, null, null, null, null)
             if (binding.yearEnd.text.toString() != "") {
                 filters.yearEnd = binding.yearEnd.text.toString().toInt()
             }
@@ -111,5 +97,10 @@ class FilterDialogFragment : DialogFragment() {
             }
             return filters
         }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
 }

@@ -1,4 +1,4 @@
-package com.rai.movieposter.ui
+package com.rai.movieposter.ui.listMovies
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,29 +7,42 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.rai.movieposter.MovieViewModel
 import com.rai.movieposter.R
 import com.rai.movieposter.adapters.ListMovieAdapter
+import com.rai.movieposter.data.Constants
+import com.rai.movieposter.data.Filters
 import com.rai.movieposter.databinding.FragmetListMovieBinding
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class ListMovieFragment : Fragment() {
 
     private var _binding: FragmetListMovieBinding? = null
-    private val binding get() = requireNotNull(_binding) {
-        "View was destroyed"
-    }
+    private val binding
+        get() = requireNotNull(_binding) {
+            "View was destroyed"
+        }
 
     private var layoutManager: GridLayoutManager? = null
-
-    private val viewModel by sharedViewModel<MovieViewModel>()
-
     private lateinit var adapter: ListMovieAdapter
+
+    private val viewModel by viewModel<ListMovieViewModel>()
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setFragmentResultListener(Constants.REQUEST_KEY) { _, bundle ->
+            viewModel.onFilterChanged(bundle.getSerializable(Constants.EXTRA_KEY) as Filters)
+        }
+    }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -74,7 +87,7 @@ class ListMovieFragment : Fragment() {
 
             toolbar.menu.findItem(R.id.action_filters)
             .setOnMenuItemClickListener {
-                findNavController().navigate(R.id.action_listMovieFragment_to_filterDialogFragment)
+                findNavController().navigate(ListMovieFragmentDirections.actionListMovieFragmentToFilterDialogFragment(viewModel.getFilter()))
                 true
             }
 

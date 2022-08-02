@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/аuthorizationFragment">
+    app:startDestination="@id/splashScreen">
     <fragment
         android:id="@+id/аuthorizationFragment"
         android:name="com.rai.movieposter.ui.AuthorizationFragment"
@@ -13,7 +13,7 @@
     </fragment>
     <fragment
         android:id="@+id/listMovieFragment"
-        android:name="com.rai.movieposter.ui.ListMovieFragment"
+        android:name="com.rai.movieposter.ui.listMovies.ListMovieFragment"
         android:label="ListMovieFragment" >
         <action
             android:id="@+id/action_listMovieFragment_to_movieDetailFragment"
@@ -57,5 +57,19 @@
     <dialog
         android:id="@+id/filterDialogFragment"
         android:name="com.rai.movieposter.ui.FilterDialogFragment"
-        android:label="FilterDialogFragment" />
+        android:label="FilterDialogFragment" >
+        <argument
+            android:name="filter"
+            app:argType="com.rai.movieposter.data.Filters" />
+    </dialog>
+    <fragment
+        android:id="@+id/splashScreen"
+        android:name="com.rai.movieposter.ui.SplashScreen"
+        android:label="SplashScreen" >
+        <action
+            android:id="@+id/action_splashScreen_to_аuthorizationFragment"
+            app:destination="@id/аuthorizationFragment"
+            app:popUpTo="@id/splashScreen"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

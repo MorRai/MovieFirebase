@@ -14,14 +14,14 @@ import java.util.*
 
 
 object FirebaseMovieService {
-    private const val TAG = "FirebaseMovieService"
-    private const val  COLLECTION_MOVIE = "movieData"
+
     @SuppressLint("StaticFieldLeak")
     private val db = FirebaseFirestore.getInstance()
     private val firebaseStorageRef = FirebaseStorage.getInstance().reference
+    private const val TAG = "FirebaseMovieService"
+    private const val  COLLECTION_MOVIE = "movieData"
 
-
-    fun getProfileData(mFilters:Filters?): Flow<List<Movie>> {
+    fun getMoviesData(mFilters:Filters?): Flow<List<Movie>> {
         return callbackFlow {
             val listenerRegistration = db.collection(COLLECTION_MOVIE)
                 .whereGreaterThan("movieDate",
@@ -60,6 +60,7 @@ object FirebaseMovieService {
     suspend  fun uploadImageWithUri(
         uri: Uri,
     ) : Flow<String> {
+
         return callbackFlow {
             val ref =
                 firebaseStorageRef.child("images/" + UUID.randomUUID().toString())
@@ -90,4 +91,7 @@ object FirebaseMovieService {
 
         }
     }
+
+
+
 }
