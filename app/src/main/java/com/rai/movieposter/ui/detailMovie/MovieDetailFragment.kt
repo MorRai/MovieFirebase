@@ -20,9 +20,7 @@ class MovieDetailFragment : Fragment() {
         "View was destroyed"
     }
 
-
     private val navigationArgs: MovieDetailFragmentArgs by navArgs()
-
 
     override fun onCreateView(
         inflater: LayoutInflater,

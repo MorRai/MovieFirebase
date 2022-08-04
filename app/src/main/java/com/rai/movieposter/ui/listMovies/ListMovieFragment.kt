@@ -5,19 +5,21 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.rai.movieposter.R
 import com.rai.movieposter.adapters.ListMovieAdapter
 import com.rai.movieposter.data.Constants
 import com.rai.movieposter.data.Filters
+import com.rai.movieposter.data.LceState
 import com.rai.movieposter.databinding.FragmetListMovieBinding
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -42,8 +44,6 @@ class ListMovieFragment : Fragment() {
         }
     }
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -58,6 +58,7 @@ class ListMovieFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        listenToChannels()
 
         with(binding){
             floatingActionButton.setOnClickListener {
@@ -109,11 +110,24 @@ class ListMovieFragment : Fragment() {
     }
 
     private fun signOut() {
-        val auth = Firebase.auth
-        if (auth.currentUser != null) {
-            auth.signOut()
+        viewModel.signOut()
+    }
+
+    private fun listenToChannels() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.allEventsFlow.collect { event ->
+                when (event) {
+                    is LceState.Message -> {
+                        Toast.makeText(requireContext(), event.message, Toast.LENGTH_SHORT).show()
+                    }
+                    is LceState.Error -> {
+                        Toast.makeText(requireContext(), event.error, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         }
     }
+
 
     private fun chooseLayout() {
         if (layoutManager ?.spanCount == 1) {

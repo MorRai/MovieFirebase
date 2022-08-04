@@ -46,5 +46,6 @@
     <string name="from">from</string>
     <string name="action_switch_layout">Switch Layout</string>
     <string name="action_sign_out">Sign out</string>
+    <string name="send_reset_email">send reset email</string>
 
 </resources>

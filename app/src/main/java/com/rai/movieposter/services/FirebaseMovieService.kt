@@ -10,6 +10,7 @@ import com.rai.movieposter.data.Movie
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.tasks.await
 import java.util.*
 
 
@@ -44,6 +45,17 @@ object FirebaseMovieService {
                 Log.e(TAG, "Cancelling posts listener")
                 listenerRegistration.remove()
             }
+        }
+    }
+
+    suspend fun getMovie(movieName: String): Movie? {
+        val db = FirebaseFirestore.getInstance()
+        return try {
+            db.collection(COLLECTION_MOVIE)
+                .document(movieName).get().await().toObject(Movie::class.java)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error getting user details", e)
+            null
         }
     }
 

@@ -59,15 +59,23 @@ class AuthorizationFragment : Fragment() {
                 val password = binding.fieldPassword.text.toString()
                 viewModel.signUpUser(email, password)
             }
+            resendPassword.setOnClickListener {
+                //стоит еще пару каких проверок сделать что владелец, а то так любой может отправлять, но для теста сойдет
+                progressBar.isVisible = true
+                val email = fieldEmail.text.toString()
+                viewModel.verifySendPasswordReset(email)
+            }
         }
     }
 
     private fun registerObserver() {
-        viewModel.currentUser.observe(viewLifecycleOwner) { user ->
-            user?.let {
-                findNavController().navigate(R.id.action_аuthorizationFragment_to_listMovieFragment)
-                Toast.makeText(context, "Reload successful!", Toast.LENGTH_SHORT).show()
-            } ?: Toast.makeText(context, "Failed to reload user.", Toast.LENGTH_SHORT).show()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.currentUser.collect { user ->
+                user?.let {
+                    findNavController().navigate(R.id.action_аuthorizationFragment_to_listMovieFragment)
+                    Toast.makeText(context, "Reload successful!", Toast.LENGTH_SHORT).show()
+                } ?: Toast.makeText(context, "Failed to reload user.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
