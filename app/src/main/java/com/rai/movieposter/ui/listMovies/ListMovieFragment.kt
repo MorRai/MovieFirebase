@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
@@ -18,7 +19,10 @@ import com.rai.movieposter.adapters.ListMovieAdapter
 import com.rai.movieposter.data.Constants
 import com.rai.movieposter.data.Filters
 import com.rai.movieposter.data.LceState
+import com.rai.movieposter.data.Response
 import com.rai.movieposter.databinding.FragmetListMovieBinding
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -60,7 +64,7 @@ class ListMovieFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         listenToChannels()
 
-        with(binding){
+        with(binding) {
             floatingActionButton.setOnClickListener {
                 val action = ListMovieFragmentDirections.actionListMovieFragmentToAddMovieFragment(
                     getString(R.string.add_fragment_title)
@@ -79,38 +83,43 @@ class ListMovieFragment : Fragment() {
 
             recyclerView.adapter = adapter
 
-            viewModel.movieData.observe(viewLifecycleOwner) { items ->
-                items.let {
-                    adapter.submitList(it)
+            viewModel.movieDataFlow.onEach { response ->
+                when (response) {
+                    is Response.Success -> {
+                        adapter.submitList(response.data)
+                        binding.paginationProgressBar.isInvisible = true
+                    }
+                    is Response.Error -> {
+                        binding.paginationProgressBar.isInvisible = true
+                        Toast.makeText(requireContext(),
+                            response.message, Toast.LENGTH_SHORT).show()
+                    }
+                    is Response.Loading -> {
+                        binding.paginationProgressBar.isVisible = true
+                    }
                 }
-            }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
 
 
-            toolbar.menu.findItem(R.id.action_filters)
-            .setOnMenuItemClickListener {
-                findNavController().navigate(ListMovieFragmentDirections.actionListMovieFragmentToFilterDialogFragment(viewModel.getFilter()))
+            toolbar.setOnMenuItemClickListener {
+                when(it.itemId){
+                    R.id.action_filters -> {
+                        findNavController().navigate(ListMovieFragmentDirections.actionListMovieFragmentToFilterDialogFragment(
+                            viewModel.getFilter()))
+                    }
+                    R.id.action_switch_layout -> {
+                        chooseLayout()
+                        setIcon(it)
+                    }
+                    R.id.action_sign_out -> {
+                        viewModel.signOut()
+                        findNavController().navigate(ListMovieFragmentDirections.actionListMovieFragmentToАuthorizationFragment())
+                    }
+                }
                 true
             }
-
-            toolbar.menu.findItem(R.id.action_switch_layout)
-            .setOnMenuItemClickListener {
-                chooseLayout()
-                setIcon(it)
-                true
-            }
-
-            toolbar.menu.findItem(R.id.action_sign_out)
-                .setOnMenuItemClickListener {
-                    signOut()
-                    findNavController().popBackStack()
-                    true
-                }
         }
 
-    }
-
-    private fun signOut() {
-        viewModel.signOut()
     }
 
     private fun listenToChannels() {
@@ -130,11 +139,11 @@ class ListMovieFragment : Fragment() {
 
 
     private fun chooseLayout() {
-        if (layoutManager ?.spanCount == 1) {
-            layoutManager ?.spanCount = 2
+        if (layoutManager?.spanCount == 1) {
+            layoutManager?.spanCount = 2
 
         } else {
-            layoutManager ?.spanCount = 1
+            layoutManager?.spanCount = 1
         }
         adapter.notifyItemRangeChanged(0, adapter.itemCount)
     }
@@ -143,7 +152,7 @@ class ListMovieFragment : Fragment() {
         if (menuItem == null)
             return
         menuItem.icon =
-            if (layoutManager ?.spanCount == 1)
+            if (layoutManager?.spanCount == 1)
                 ContextCompat.getDrawable(this.requireContext(), R.drawable.ic_grid_layout)
             else ContextCompat.getDrawable(this.requireContext(), R.drawable.ic_linear_layout)
     }

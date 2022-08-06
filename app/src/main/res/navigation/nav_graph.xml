@@ -9,7 +9,9 @@
         android:label="АuthorizationFragment" >
         <action
             android:id="@+id/action_аuthorizationFragment_to_listMovieFragment"
-            app:destination="@id/listMovieFragment" />
+            app:destination="@id/listMovieFragment"
+            app:popUpTo="@id/аuthorizationFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/listMovieFragment"
@@ -24,6 +26,9 @@
         <action
             android:id="@+id/action_listMovieFragment_to_filterDialogFragment"
             app:destination="@id/filterDialogFragment" />
+        <action
+            android:id="@+id/action_listMovieFragment_to_аuthorizationFragment"
+            app:destination="@id/аuthorizationFragment" />
     </fragment>
     <fragment
         android:id="@+id/movieDetailFragment"

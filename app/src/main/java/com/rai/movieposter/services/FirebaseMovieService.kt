@@ -7,6 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.rai.movieposter.data.Filters
 import com.rai.movieposter.data.Movie
+import com.rai.movieposter.data.Response
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -20,29 +21,32 @@ object FirebaseMovieService {
     private val db = FirebaseFirestore.getInstance()
     private val firebaseStorageRef = FirebaseStorage.getInstance().reference
     private const val TAG = "FirebaseMovieService"
-    private const val  COLLECTION_MOVIE = "movieData"
+    private const val COLLECTION_MOVIE = "movieData"
 
-    fun getMoviesData(mFilters:Filters?): Flow<List<Movie>> {
+    fun getMoviesData(mFilters: Filters?):Flow<Response<List<Movie>>> {
         return callbackFlow {
+            trySend(Response.Loading)
+
             val listenerRegistration = db.collection(COLLECTION_MOVIE)
                 .whereGreaterThan("movieDate",
                     mFilters?.yearStart ?: 0)
                 .whereLessThan("movieDate",
                     mFilters?.yearEnd ?: 9999)
+                .limit(25)
                 .addSnapshotListener { documentSnapshots, exception ->
-                    if (exception != null) {
-                        Log.e("onEvent:error", exception.toString())
-                        return@addSnapshotListener
+                    val response = if (documentSnapshots != null) {
+                        val movies = documentSnapshots.documents
+                            .mapNotNull { it.toObject(Movie::class.java) }.filter {
+                                (it.ratingImbd!! >= mFilters?.imbdStart ?: 0.0f) && (it.ratingImbd <= mFilters?.imbdEnd ?: 9999.0f)
+                                        && (it.ratingKinopoisk!! >= mFilters?.kinopoiskStart ?: 0.0f) && (it.ratingKinopoisk <= mFilters?.kinopoiskEnd ?: 9999.0f)
+                            }
+                        Response.Success(movies)
+                    } else {
+                        Response.Error(exception?.message ?: exception.toString())
                     }
-                    val map = documentSnapshots!!.documents
-                        .mapNotNull { it.toObject(Movie::class.java) }.filter {
-                            (it.ratingImbd!! >= mFilters?.imbdStart ?: 0.0f) && (it.ratingImbd <= mFilters?.imbdEnd ?: 9999.0f)
-                                    && (it.ratingKinopoisk!! >= mFilters?.kinopoiskStart ?: 0.0f) && (it.ratingKinopoisk <= mFilters?.kinopoiskEnd ?: 9999.0f)
-                        }
-                    trySend(map).isSuccess
+                    trySend(response).isSuccess
                 }
             awaitClose {
-                Log.e(TAG, "Cancelling posts listener")
                 listenerRegistration.remove()
             }
         }
@@ -60,7 +64,7 @@ object FirebaseMovieService {
     }
 
 
-     fun addToCart(movie: Movie){
+    fun addToCart(movie: Movie) {
         db.collection(COLLECTION_MOVIE)
             .document(movie.nameMovie!!)
             .set(movie)
@@ -69,9 +73,9 @@ object FirebaseMovieService {
     }
 
 
-    suspend  fun uploadImageWithUri(
+    suspend fun uploadImageWithUri(
         uri: Uri,
-    ) : Flow<String> {
+    ): Flow<String> {
 
         return callbackFlow {
             val ref =
@@ -100,10 +104,8 @@ object FirebaseMovieService {
             }
 
 
-
         }
     }
-
 
 
 }
