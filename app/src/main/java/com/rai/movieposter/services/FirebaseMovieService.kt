@@ -23,7 +23,7 @@ object FirebaseMovieService {
     private const val TAG = "FirebaseMovieService"
     private const val COLLECTION_MOVIE = "movieData"
 
-    fun getMoviesData(mFilters: Filters?):Flow<Response<List<Movie>>> {
+    fun getMoviesData(mFilters: Filters?): Flow<Response<List<Movie>>> {
         return callbackFlow {
             trySend(Response.Loading)
 
@@ -52,14 +52,13 @@ object FirebaseMovieService {
         }
     }
 
-    suspend fun getMovie(movieName: String): Movie? {
-        val db = FirebaseFirestore.getInstance()
+    suspend fun getMovie(movieName: String): Response<Movie> {
         return try {
-            db.collection(COLLECTION_MOVIE)
+            val movie = db.collection(COLLECTION_MOVIE)
                 .document(movieName).get().await().toObject(Movie::class.java)
-        } catch (e: Exception) {
-            Log.e(TAG, "Error getting user details", e)
-            null
+            if (movie == null) Response.Error("Don't found movie!") else Response.Success(movie)
+        } catch (exception: Exception) {
+            Response.Error(exception.message ?: exception.toString())
         }
     }
 

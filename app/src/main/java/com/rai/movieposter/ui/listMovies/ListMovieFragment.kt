@@ -77,7 +77,8 @@ class ListMovieFragment : Fragment() {
 
             adapter = ListMovieAdapter(requireContext(), layoutManager) {
                 val action =
-                    ListMovieFragmentDirections.actionListMovieFragmentToMovieDetailFragment(it)
+                    ListMovieFragmentDirections.actionListMovieFragmentToMovieDetailFragment(it.nameMovie?:"")
+                //либо кидать экземплр класс
                 findNavController().navigate(action)
             }
 

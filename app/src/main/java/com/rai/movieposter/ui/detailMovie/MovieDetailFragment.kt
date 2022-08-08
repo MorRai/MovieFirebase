@@ -6,12 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.MediaController
+import android.widget.Toast
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.rai.movieposter.R
+import com.rai.movieposter.data.Movie
+import com.rai.movieposter.data.Response
 import com.rai.movieposter.databinding.FragmetMovieDetailBinding
+import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class MovieDetailFragment : Fragment() {
 
@@ -20,7 +29,12 @@ class MovieDetailFragment : Fragment() {
         "View was destroyed"
     }
 
-    private val navigationArgs: MovieDetailFragmentArgs by navArgs()
+    private val args by navArgs<MovieDetailFragmentArgs>()
+
+    private val viewModel by viewModel<MovieDetailViewModel>{
+        parametersOf(args.movieName)
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,11 +48,32 @@ class MovieDetailFragment : Fragment() {
             .root
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val movie = navigationArgs.movie
-        with(binding){
+        lifecycleScope.launch {
+            viewModel.movieFlow.collect { response ->
+                when (response) {
+                    is Response.Success -> {
+                        binding.paginationProgressBar.isInvisible = true
+                        bind(response.data)
+                    }
+                    is Response.Error -> {
+                        binding.paginationProgressBar.isInvisible = true
+                        Toast.makeText(requireContext(),
+                            response.message, Toast.LENGTH_SHORT).show()
+                    }
+                    Response.Loading -> {
+                        binding.paginationProgressBar.isVisible = true
+                    }
+                }
+            }
+        }
+    }
+
+
+    @SuppressLint("SetTextI18n")
+    private fun bind(movie: Movie) {
+        with(binding) {
             nameMovie.text = movie.nameMovie.toString()
             certificateYearCountry.text = movie.certificate.toString() + movie.movieDate.toString() + movie.countryOfOrigin.toString()
             genres.text = movie.genres.toString()
@@ -58,7 +93,6 @@ class MovieDetailFragment : Fragment() {
                 )
                 findNavController().navigate(action)
             }
-
         }
     }
 

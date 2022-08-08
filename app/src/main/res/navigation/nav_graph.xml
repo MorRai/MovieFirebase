@@ -35,8 +35,8 @@
         android:name="com.rai.movieposter.ui.detailMovie.MovieDetailFragment"
         android:label="MovieDetailFragment" >
         <argument
-            android:name="movie"
-            app:argType="com.rai.movieposter.data.Movie" />
+            android:name="movieName"
+            app:argType="string" />
         <action
             android:id="@+id/action_movieDetailFragment_to_addMovieFragment"
             app:destination="@id/addMovieFragment" />
