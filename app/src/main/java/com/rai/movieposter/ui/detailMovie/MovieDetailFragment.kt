@@ -89,7 +89,7 @@ class MovieDetailFragment : Fragment() {
             editItem.setOnClickListener {
                 val action = MovieDetailFragmentDirections.actionMovieDetailFragmentToAddMovieFragment(
                     getString(R.string.edit_fragment_title),
-                    movie
+                    movie.nameMovie
                 )
                 findNavController().navigate(action)
             }

@@ -67,8 +67,7 @@ class ListMovieFragment : Fragment() {
         with(binding) {
             floatingActionButton.setOnClickListener {
                 val action = ListMovieFragmentDirections.actionListMovieFragmentToAddMovieFragment(
-                    getString(R.string.add_fragment_title)
-                )
+                    getString(R.string.add_fragment_title))
                 findNavController().navigate(action)
             }
 
@@ -77,7 +76,8 @@ class ListMovieFragment : Fragment() {
 
             adapter = ListMovieAdapter(requireContext(), layoutManager) {
                 val action =
-                    ListMovieFragmentDirections.actionListMovieFragmentToMovieDetailFragment(it.nameMovie?:"")
+                    ListMovieFragmentDirections.actionListMovieFragmentToMovieDetailFragment(it.nameMovie
+                        ?: "")
                 //либо кидать экземплр класс
                 findNavController().navigate(action)
             }
@@ -103,7 +103,7 @@ class ListMovieFragment : Fragment() {
 
 
             toolbar.setOnMenuItemClickListener {
-                when(it.itemId){
+                when (it.itemId) {
                     R.id.action_filters -> {
                         findNavController().navigate(ListMovieFragmentDirections.actionListMovieFragmentToFilterDialogFragment(
                             viewModel.getFilter()))

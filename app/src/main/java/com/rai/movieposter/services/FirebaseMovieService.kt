@@ -11,6 +11,7 @@ import com.rai.movieposter.data.Response
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import java.util.*
 
@@ -69,42 +70,23 @@ object FirebaseMovieService {
             .set(movie)
             .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
             .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+        //можно бы oтвет овзращать
     }
 
 
     suspend fun uploadImageWithUri(
         uri: Uri,
-    ): Flow<String> {
-
-        return callbackFlow {
-            val ref =
-                firebaseStorageRef.child("images/" + UUID.randomUUID().toString())
-
-            val uploadTask = ref.putFile(uri)
-
-            val urlTask = uploadTask.continueWithTask { task ->
-                if (!task.isSuccessful) {
-                    task.exception?.let {
-                        Log.e(TAG, "Error image listener")
-                    }
-                }
-                ref.downloadUrl
-            }.addOnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    Log.e(TAG, "Error image listener")
-                    return@addOnCompleteListener
-                } else {
-                    val downloadUri = task.result.toString()
-                    trySend(downloadUri).isSuccess
-                }
-            }
-            awaitClose {
-                Log.e(TAG, "Cancelling posts listener")
-            }
-
-
+    ): Flow<Response<String>> = flow {
+        try {
+          emit(Response.Loading)
+            val downloadUrl =  firebaseStorageRef.child("images/" + UUID.randomUUID().toString())
+                .putFile(uri)
+                .await()
+                .storage.downloadUrl.await()
+            emit(Response.Success(downloadUrl.toString()))
+        }catch (e: Exception) {
+            emit(Response.Error(e.message?:""))
         }
     }
-
 
 }
