@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:contentPadding="16dp"
-    android:layout_margin="8dp">
+    android:layout_margin="8dp"
+    app:contentPadding="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -13,8 +13,8 @@
 
         <ImageView
             android:id="@+id/imageFilm"
-            android:layout_width="125dp"
-            android:layout_height="125dp"
+            android:layout_width="150dp"
+            android:layout_height="200dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -60,8 +60,8 @@
             android:id="@+id/ratingIMDB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/movie_detail_text_size_16sp"
             android:layout_marginStart="@dimen/movie_detail_margin"
+            android:textSize="@dimen/movie_detail_text_size_16sp"
             app:layout_constraintBottom_toBottomOf="@+id/textIMDB"
             app:layout_constraintStart_toEndOf="@+id/textIMDB"
             app:layout_constraintTop_toTopOf="@+id/textIMDB"
@@ -71,8 +71,8 @@
             android:id="@+id/ratingKinoPoisk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/movie_detail_text_size_16sp"
             android:layout_marginStart="@dimen/movie_detail_margin"
+            android:textSize="@dimen/movie_detail_text_size_16sp"
             app:layout_constraintBottom_toBottomOf="@+id/textKinoPoisk"
             app:layout_constraintStart_toEndOf="@+id/textKinoPoisk"
             app:layout_constraintTop_toTopOf="@+id/textKinoPoisk"

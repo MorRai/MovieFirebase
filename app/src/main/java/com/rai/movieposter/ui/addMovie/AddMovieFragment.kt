@@ -14,6 +14,7 @@ import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.setupWithNavController
 import coil.load
 import com.rai.movieposter.R
 import com.rai.movieposter.data.Movie
@@ -76,6 +77,8 @@ class AddMovieFragment : Fragment() {
         }
 
         with(binding) {
+            toolbar.setupWithNavController(findNavController())
+
             btnChooseImage.setOnClickListener {
                 imageLauncher.launch("image/*")
             }
@@ -133,7 +136,7 @@ class AddMovieFragment : Fragment() {
         ActivityResultContracts.GetContent()
     ) { uri ->
         lifecycle.coroutineScope.launch {
-            viewModel.uploadImage(uri!!).collect { response ->
+            viewModel.uploadImage(uri!!,urlImage).collect { response ->
                 when (response) {
                     is Response.Success -> {
                         binding.loadingProgressBar.isInvisible = true
@@ -164,7 +167,7 @@ class AddMovieFragment : Fragment() {
         ActivityResultContracts.GetContent()
     ) { uri ->
         lifecycle.coroutineScope.launch {
-            viewModel.uploadImage(uri!!).collect { response ->
+            viewModel.uploadImage(uri!!,urlVideo).collect { response ->
                 when (response) {
                     is Response.Success -> {
                         binding.loadingProgressBar.isInvisible = true

@@ -18,6 +18,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "YOUTUBE_API_KEY", youtubeApiKey)
     }
 
     buildTypes {
@@ -46,6 +48,9 @@ android {
 }
 
 dependencies {
+
+    implementation files('libs/YouTubeAndroidPlayerApi.jar')
+
     implementation platform('com.google.firebase:firebase-bom:29.2.1')
 
     def lottieVersion = "3.4.0"

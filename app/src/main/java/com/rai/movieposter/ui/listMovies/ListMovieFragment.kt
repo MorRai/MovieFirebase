@@ -71,7 +71,7 @@ class ListMovieFragment : Fragment() {
                 findNavController().navigate(action)
             }
 
-            layoutManager = GridLayoutManager(requireContext(), 2)
+            layoutManager = GridLayoutManager(requireContext(), 1)
             recyclerView.layoutManager = layoutManager
 
             adapter = ListMovieAdapter(requireContext(), layoutManager) {
@@ -141,7 +141,7 @@ class ListMovieFragment : Fragment() {
 
     private fun chooseLayout() {
         if (layoutManager?.spanCount == 1) {
-            layoutManager?.spanCount = 2
+            layoutManager?.spanCount =  resources.getInteger(R.integer.grid_column_count)
 
         } else {
             layoutManager?.spanCount = 1
@@ -154,8 +154,8 @@ class ListMovieFragment : Fragment() {
             return
         menuItem.icon =
             if (layoutManager?.spanCount == 1)
-                ContextCompat.getDrawable(this.requireContext(), R.drawable.ic_grid_layout)
-            else ContextCompat.getDrawable(this.requireContext(), R.drawable.ic_linear_layout)
+                ContextCompat.getDrawable(this.requireContext(), R.drawable.ic_linear_layout)
+            else ContextCompat.getDrawable(this.requireContext(), R.drawable.ic_grid_layout)
     }
 
     override fun onDestroyView() {

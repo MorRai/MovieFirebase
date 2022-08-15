@@ -11,11 +11,12 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.net.URL
 
 class AddMovieViewModel(movieName: String) : ViewModel() {
 
-    suspend fun uploadImage(uri: Uri): Flow<Response<String>> {
-        return FirebaseMovieService.uploadImageWithUri(uri)
+    suspend fun uploadImage(uri: Uri, oldUrl:String?): Flow<Response<String>> {
+        return FirebaseMovieService.uploadImageWithUri(uri,oldUrl)
     }
 
     val movieFlow = flow {

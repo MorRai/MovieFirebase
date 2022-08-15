@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.setupWithNavController
 import coil.load
 import com.rai.movieposter.R
 import com.rai.movieposter.data.Movie
@@ -50,6 +51,7 @@ class MovieDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.toolbar.setupWithNavController(findNavController())
         lifecycleScope.launch {
             viewModel.movieFlow.collect { response ->
                 when (response) {

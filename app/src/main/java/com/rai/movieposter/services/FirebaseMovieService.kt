@@ -76,9 +76,13 @@ object FirebaseMovieService {
 
     suspend fun uploadImageWithUri(
         uri: Uri,
+        oldUrl: String?
     ): Flow<Response<String>> = flow {
         try {
           emit(Response.Loading)
+            if (oldUrl != null) {
+                FirebaseStorage.getInstance().getReferenceFromUrl(oldUrl).delete()
+            }
             val downloadUrl =  firebaseStorageRef.child("images/" + UUID.randomUUID().toString())
                 .putFile(uri)
                 .await()
