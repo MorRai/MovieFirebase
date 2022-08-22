@@ -1,6 +1,7 @@
 package com.rai.movieposter.ui.detailMovie
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.setupWithNavController
 import coil.load
 import com.google.android.youtube.player.*
+import com.rai.movieposter.BuildConfig
 import com.rai.movieposter.R
 import com.rai.movieposter.data.Movie
 import com.rai.movieposter.data.Response
@@ -107,7 +109,7 @@ class MovieDetailFragment : Fragment() {
         youTubePlayerFragment = childFragmentManager
            .findFragmentById(R.id.videoView) as YouTubePlayerFragmentX?
 
-        youTubePlayerFragment?.initialize("AIzaSyDEaERZ-xE2F2hbN2EuQGASD6zhsdddI4w",
+        youTubePlayerFragment?.initialize(BuildConfig.youtubeApiKey,
             object : YouTubePlayer.OnInitializedListener {
                 override fun onInitializationSuccess(
                     provider: YouTubePlayer.Provider,
