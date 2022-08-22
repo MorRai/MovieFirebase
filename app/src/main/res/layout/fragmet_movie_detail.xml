@@ -90,26 +90,25 @@
                 app:layout_constraintTop_toBottomOf="@+id/runtime"
                 tools:text="пваопвоапвлдуукпукпуклдплдулкплулкплулкплуклплуклплукплулкпл" />
 
-            <com.google.android.youtube.player.YouTubePlayerView
+            <fragment
                 android:id="@+id/videoView"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:name="com.google.android.youtube.player.YouTubePlayerFragmentX"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/storyline" />
-
-
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/edit_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/detail_movie_margin"
-                android:layout_marginBottom="@dimen/detail_movie_margin"
                 android:contentDescription="@string/edit_item"
                 android:src="@drawable/ic_edit"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:tint="@android:color/white" />
 
 

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.MediaController
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isInvisible
@@ -20,7 +19,6 @@ import com.rai.movieposter.R
 import com.rai.movieposter.data.Movie
 import com.rai.movieposter.data.Response
 import com.rai.movieposter.databinding.FragmentAddMovieBinding
-import com.rai.movieposter.ui.detailMovie.MovieDetailFragmentArgs
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -41,7 +39,6 @@ class AddMovieFragment : Fragment() {
     }
 
     private var urlImage: String? = null
-    private var urlVideo: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -82,9 +79,6 @@ class AddMovieFragment : Fragment() {
             btnChooseImage.setOnClickListener {
                 imageLauncher.launch("image/*")
             }
-            btnChooseVideo.setOnClickListener {
-                videoLauncher.launch("video/*")
-            }
 
             saveAction.setOnClickListener {
                 val genresList = listOf(itemGenres.text.toString(),
@@ -100,13 +94,12 @@ class AddMovieFragment : Fragment() {
                     countryOfOrigin = countryOfOrigin.text.toString(),
                     runtime = runtime.text.toString(),
                     storyline = storyline.text.toString(),
-                    trailer = urlVideo ?: "",
+                    trailer = codeVideo.text.toString(),
                     image = urlImage ?: "")
 
                 findNavController().navigate(R.id.action_addMovieFragment_to_listMovieFragment)
             }
         }
-
     }
 
     private fun bind(movie: Movie) {
@@ -124,11 +117,7 @@ class AddMovieFragment : Fragment() {
             storyline.setText(movie.storyline)
             imageLabel.load(movie.image)
             urlImage = movie.image
-            urlVideo = movie.trailer
-            videoLabel.setVideoPath(movie.trailer)
-            val mediaController = MediaController(requireContext())
-            mediaController.setAnchorView(videoLabel)
-            videoLabel.setMediaController(mediaController)
+            codeVideo.setText(movie.trailer)
         }
     }
 
@@ -136,7 +125,7 @@ class AddMovieFragment : Fragment() {
         ActivityResultContracts.GetContent()
     ) { uri ->
         lifecycle.coroutineScope.launch {
-            viewModel.uploadImage(uri!!,urlImage).collect { response ->
+            viewModel.uploadImage(uri!!, urlImage).collect { response ->
                 when (response) {
                     is Response.Success -> {
                         binding.loadingProgressBar.isInvisible = true
@@ -161,38 +150,6 @@ class AddMovieFragment : Fragment() {
             }
         }
     }
-
-
-    private val videoLauncher = registerForActivityResult(
-        ActivityResultContracts.GetContent()
-    ) { uri ->
-        lifecycle.coroutineScope.launch {
-            viewModel.uploadImage(uri!!,urlVideo).collect { response ->
-                when (response) {
-                    is Response.Success -> {
-                        binding.loadingProgressBar.isInvisible = true
-                        binding.saveAction.isEnabled = true
-                        urlVideo = response.data
-                        binding.videoLabel.setVideoPath(urlVideo)
-                    }
-                    is Response.Error -> {
-                        binding.loadingProgressBar.isInvisible = true
-                        binding.saveAction.isEnabled = true
-                        Toast.makeText(requireContext(),
-                            response.message, Toast.LENGTH_SHORT).show()
-                    }
-                    Response.Loading -> {
-                        binding.loadingProgressBar.isVisible = true
-                        binding.saveAction.isEnabled = false
-                        Toast.makeText(requireContext(),
-                            "Выгружуется изображение на сервер, ожидайте!",
-                            Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-        }
-    }
-
 
     override fun onDestroy() {
         super.onDestroy()

@@ -18,5 +18,4 @@ class MovieDetailViewModel(movieName: String) : ViewModel() {
         started = SharingStarted.Eagerly,
         initialValue = Response.Loading
     )
-
 }

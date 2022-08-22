@@ -234,6 +234,26 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/video_label"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/add_movie_margin"
+            android:hint="@string/youtube_code_video"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/storyline_label">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/code_video"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textAutoComplete|textCapWords"
+                android:singleLine="true" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <ImageView
             android:id="@+id/image_label"
@@ -244,8 +264,9 @@
             android:layout_weight="1"
             app:layout_constraintEnd_toStartOf="@+id/btn_choose_image"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/storyline_label"
-            tools:srcCompat="@tools:sample/avatars" />
+            app:layout_constraintTop_toBottomOf="@+id/video_label"
+            tools:srcCompat="@tools:sample/avatars"
+            android:contentDescription="@string/image_poster" />
 
 
         <Button
@@ -256,27 +277,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/image_label"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/image_label" />
-
-
-        <VideoView
-            android:id="@+id/video_label"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_weight="1"
-            android:layout_marginTop="@dimen/add_movie_margin"
-            app:layout_constraintEnd_toStartOf="@+id/btn_choose_video"
-            app:layout_constraintHorizontal_bias="0.774"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image_label" />
-
-        <Button
-            android:id="@+id/btn_choose_video"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/choose_video"
-            app:layout_constraintBottom_toBottomOf="@+id/video_label"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/video_label" />
 
 
 
@@ -290,7 +290,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/video_label" />
+            app:layout_constraintTop_toBottomOf="@+id/image_label" />
 
         <ProgressBar
             android:id="@+id/loadingProgressBar"

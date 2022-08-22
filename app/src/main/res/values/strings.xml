@@ -47,5 +47,7 @@
     <string name="action_switch_layout">Switch Layout</string>
     <string name="action_sign_out">Sign out</string>
     <string name="send_reset_email">send reset email</string>
+    <string name="youtube_code_video">Youtube code video</string>
+    <string name="image_poster">Image poster</string>
 
 </resources>
