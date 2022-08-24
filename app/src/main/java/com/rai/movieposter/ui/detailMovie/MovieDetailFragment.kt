@@ -1,7 +1,6 @@
 package com.rai.movieposter.ui.detailMovie
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -59,7 +58,6 @@ class MovieDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initializeYoutubePlayer()
         binding.toolbar.setupWithNavController(findNavController())
         lifecycleScope.launch {
             viewModel.movieFlow.collect { response ->
@@ -93,21 +91,31 @@ class MovieDetailFragment : Fragment() {
             runtime.text = movie.runtime.toString()
             storyline.text = movie.storyline.toString()
             imageMovie.load(movie.image)
-            youTubePlayer?.loadVideo(movie.trailer)
-            editItem.setOnClickListener {
-                val action =
-                    MovieDetailFragmentDirections.actionMovieDetailFragmentToAddMovieFragment(
-                        getString(R.string.edit_fragment_title),
-                        movie.nameMovie
-                    )
-                findNavController().navigate(action)
+            try {
+                youTubePlayer?.loadVideo(movie.trailer)
+            } catch (e: IllegalStateException) {
+                initializeYoutubePlayer()
+            }
+
+            toolbar.setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.edit_movie -> {
+                        val action =
+                            MovieDetailFragmentDirections.actionMovieDetailFragmentToAddMovieFragment(
+                                getString(R.string.edit_fragment_title),
+                                movie.nameMovie
+                            )
+                        findNavController().navigate(action)
+                    }
+                }
+                true
             }
         }
     }
 
     private fun initializeYoutubePlayer() {
         youTubePlayerFragment = childFragmentManager
-           .findFragmentById(R.id.videoView) as YouTubePlayerFragmentX?
+            .findFragmentById(R.id.videoView) as YouTubePlayerFragmentX?
 
         youTubePlayerFragment?.initialize(BuildConfig.youtubeApiKey,
             object : YouTubePlayer.OnInitializedListener {
@@ -119,7 +127,7 @@ class MovieDetailFragment : Fragment() {
                     if (!wasRestored) {
                         youTubePlayer = player
                         youTubePlayer!!.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT)
-                    }
+                   }
                 }
 
                 override fun onInitializationFailure(
@@ -130,7 +138,7 @@ class MovieDetailFragment : Fragment() {
                         "Video player failed!", Toast.LENGTH_SHORT).show()
                 }
 
-            })?: Toast.makeText(requireContext(),
+            }) ?: Toast.makeText(requireContext(),
             "Video player don't initialize!", Toast.LENGTH_SHORT).show()
     }
 

@@ -49,5 +49,11 @@
     <string name="send_reset_email">send reset email</string>
     <string name="youtube_code_video">Youtube code video</string>
     <string name="image_poster">Image poster</string>
+    <string name="edit_movie">edit movie</string>
+    <string name="list_movie">List movie</string>
+    <string name="movie_detail">Movie detail</string>
+    <string name="add_movie">Add movie</string>
+    <string name="authorisation">Authorisation</string>
+    <string name="logo">logo</string>
 
 </resources>

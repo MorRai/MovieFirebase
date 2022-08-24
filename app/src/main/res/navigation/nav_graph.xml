@@ -6,7 +6,7 @@
     <fragment
         android:id="@+id/аuthorizationFragment"
         android:name="com.rai.movieposter.ui.authorization.AuthorizationFragment"
-        android:label="АuthorizationFragment" >
+        android:label="@string/authorisation" >
         <action
             android:id="@+id/action_аuthorizationFragment_to_listMovieFragment"
             app:destination="@id/listMovieFragment"
@@ -16,7 +16,7 @@
     <fragment
         android:id="@+id/listMovieFragment"
         android:name="com.rai.movieposter.ui.listMovies.ListMovieFragment"
-        android:label="ListMovieFragment" >
+        android:label="@string/list_movie">
         <action
             android:id="@+id/action_listMovieFragment_to_movieDetailFragment"
             app:destination="@id/movieDetailFragment" />
@@ -33,7 +33,7 @@
     <fragment
         android:id="@+id/movieDetailFragment"
         android:name="com.rai.movieposter.ui.detailMovie.MovieDetailFragment"
-        android:label="MovieDetailFragment" >
+        android:label="@string/movie_detail" >
         <argument
             android:name="movieName"
             app:argType="string" />
@@ -44,7 +44,7 @@
     <fragment
         android:id="@+id/addMovieFragment"
         android:name="com.rai.movieposter.ui.addMovie.AddMovieFragment"
-        android:label="AddMovieFragment" >
+        android:label="@string/add_movie" >
         <argument
             android:name="title"
             app:argType="string" />
