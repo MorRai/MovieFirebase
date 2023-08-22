@@ -6,7 +6,7 @@ specify the YouTube video code when editing, which will be displayed, played whe
 Also, the application has authorization.
 
 ## Video
-https://github.com/MorRai/MovieFirebase/assets/77611034/e442b840-1d8b-4e2a-81d0-f081b29828ac
+https://github.com/MorRai/MovieFirebase/assets/77611034/56464cd1-12b1-423e-a0a8-83a0266186ec
 
 ## Libraries and other stuff applied:
 - Storage Firebase
